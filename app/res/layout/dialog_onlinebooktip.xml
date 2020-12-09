@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/content_ll"
+        android:layout_width="@dimen/w_800"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_loan_black_conner"
+        android:gravity="center"
+        android:minHeight="@dimen/h_380"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/h_71">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/h_38"
+            android:text="提示"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_36"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/w_90"
+            android:layout_marginRight="@dimen/w_90"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="正在下载 中国民法典争鸣争鸣争鸣中国民法典争鸣争鸣... "
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_36"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/content2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/w_90"
+            android:layout_marginTop="@dimen/h_10"
+            android:layout_marginRight="@dimen/w_90"
+            android:text="下载成功后可在我的借阅图书中查看"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_36"
+            android:visibility="visible" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/h_85"
+            android:background="@color/color_FFCCCCCC"
+            android:layout_marginBottom="@dimen/h_2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/h_120"
+            >
+
+            <TextView
+                android:id="@+id/dialog_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_modal_left"
+                android:textSize="@dimen/font_size_36"/>
+
+            <View
+                android:id="@+id/dialog_divider"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/black">
+
+            </View>
+
+            <TextView
+                android:id="@+id/dialog_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_modal_right"
+                android:textSize="@dimen/font_size_36" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

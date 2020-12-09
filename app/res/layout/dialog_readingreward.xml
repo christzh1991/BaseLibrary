@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/linear_reading_reward"
+        android:layout_width="@dimen/w_800"
+        android:layout_height="@dimen/h_660"
+        android:orientation="vertical"
+        android:background="@mipmap/dialog_readingreward"
+        android:gravity="center_horizontal"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_welfare_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_330">
+
+            <TextView
+                android:id="@+id/tv_welfare_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1"
+                android:textColor="@color/black"
+                android:includeFontPadding="false"
+                android:textSize="@dimen/font_size_100"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_welfare_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_welfare_time"
+                android:layout_marginBottom="@dimen/h_15"
+                android:layout_toEndOf="@+id/tv_welfare_time"
+                android:text="小时"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_32" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_read_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_15"
+            android:layout_marginBottom="@dimen/h_15"
+            android:text="已阅读10分钟，借阅证时长 +1 小时"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_36" />
+
+        <TextView
+            android:id="@+id/tv_sub_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_15"
+            android:text="继续阅读20分钟，借阅证时长 +3 小时"
+            android:textColor="#666666"
+            android:alpha="0.75"
+            android:textSize="@dimen/font_size_32" />
+
+    </LinearLayout>
+
+</LinearLayout>

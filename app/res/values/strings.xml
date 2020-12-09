@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HLibrary</string>
+    <string name="toast_network_error">网络连接异常，请检查网络</string>
+    <string name="message_notify" translatable="false">消息提醒</string>
+    <string name="message_opened" translatable="false">已开启</string>
+    <string name="message_closed" translatable="false">已关闭</string>
+</resources>
