@@ -30,7 +30,7 @@ object ExceptionHandle {
              * 传入状态码，根据状态码判定错误信息
              */
             ex = ResponseException(e, ERROR.HTTP_ERROR)
-            when (httpException.code()) {
+            when (httpException?.code()) {
                 UNAUTHORIZED -> ex.message = "未验证"
                 FORBIDDEN -> ex.message = "服务禁止访问"
                 NOT_FOUND -> ex.message = "服务不存在"
@@ -108,21 +108,21 @@ object ExceptionHandle {
      * 自定义Throwable
      */
     class ResponseThrowable(throwable: Throwable?, var code: Int) : Exception(throwable) {
-        var message: String? = null
+        override var message: String? = null
     }
 
     /**
      * 服务器异常
      */
-    inner class ServerException : RuntimeException() {
+    class ServerException : RuntimeException() {
         var code = 0
-        var message: String? = null
+        override var message: String? = null
     }
 
     /**
      * 统一异常类，便于处理
      */
     class ResponseException(throwable: Throwable?, var code: Int) : Exception(throwable) {
-        var message: String? = null
+        override var message: String? = null
     }
 }

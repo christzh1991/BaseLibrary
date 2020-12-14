@@ -28,7 +28,7 @@ class GsonConverter : IConverter {
             .create()
     }
 
-    override fun encode(data: RealEntity<Any>): ByteArray? {
+    override fun encode(data: RealEntity<Any>): ByteArray {
         val dataStr: String = mGson!!.toJson(data)
         return dataStr.toByteArray()
     }

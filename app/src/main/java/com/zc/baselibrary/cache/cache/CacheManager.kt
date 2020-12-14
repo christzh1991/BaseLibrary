@@ -134,15 +134,15 @@ class CacheManager private constructor() {
         return context
     }
 
-    private fun getConverter(): IConverter {
+    fun getConverter(): IConverter {
         return converter
     }
 
-    private fun getCacheMode(): CacheMode? {
+    fun getCacheMode(): CacheMode? {
         return cacheMode
     }
 
-    private fun getDiskCacheSizeByMB(): Int {
+    fun getDiskCacheSizeByMB(): Int {
         return if (cacheMode === CacheMode.BOTH || cacheMode === CacheMode.ONLY_DISK) diskCacheSizeByMB else 0
     }
 
@@ -150,7 +150,7 @@ class CacheManager private constructor() {
         return if (cacheMode === CacheMode.BOTH || cacheMode === CacheMode.ONLY_MEMORY) memoryCacheSizeByMB else 0
     }
 
-    private fun getDiskDirName(): String {
+    fun getDiskDirName(): String {
         return if (cacheMode === CacheMode.BOTH || cacheMode === CacheMode.ONLY_DISK) diskDirName else ""
     }
 
@@ -323,7 +323,7 @@ class CacheManager private constructor() {
         return Observable.just(result)
     }
 
-    fun remove(vararg keys: String?): Observable<Boolean?> {
+    fun remove(vararg keys:String): Observable<Boolean?> {
         if (getCacheMode() === CacheMode.NONE) return Observable.just(true)
         var result = false
         for (i in keys.indices) {

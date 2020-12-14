@@ -13,13 +13,13 @@ import java.lang.reflect.Type
  * @author zhangchao
  * @date  2020年12月3日
  */
-class SerializableConverter<T> : IConverter<T> {
-    override fun encode(data: RealEntity<T>): ByteArray? {
+class SerializableConverter : IConverter {
+    override fun encode(data: RealEntity<Any>): ByteArray? {
         return SerializeUtil.serialize(data)
     }
 
-    override fun decode(cacheData: ByteArray?, type: Type?): RealEntity<T> {
-        return SerializeUtil.unserialize(cacheData) as RealEntity<T>
+    override fun decode(cacheData: ByteArray?, type: Type?): RealEntity<Any> {
+        return SerializeUtil.unserialize(cacheData) as RealEntity<Any>
     }
 
 }

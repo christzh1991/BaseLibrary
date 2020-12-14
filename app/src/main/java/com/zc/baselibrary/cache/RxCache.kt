@@ -1,7 +1,12 @@
 package com.zc.baselibrary.cache
 
 import android.app.Application
-import com.hh.hlibrary.cache.cache.CacheManager
+import com.zc.baselibrary.cache.cache.CacheManager
+import com.zc.baselibrary.cache.converter.IConverter
+import com.zc.baselibrary.cache.entity.CacheResponse
+import com.zc.baselibrary.cache.mode.CacheMode
+import com.zc.baselibrary.cache.util.LogUtil
+import com.zc.baselibrary.cache.util.Utilities
 import io.reactivex.Observable
 import java.lang.reflect.Type
 
@@ -11,30 +16,31 @@ import java.lang.reflect.Type
  * @date  2020年12月3日
  */
 class RxCache private constructor() {
-    private var mCacheManagerBuilder: CacheManager.Builder? = null
-    private var mCacheManager: CacheManager? = null
+    private lateinit var mCacheManagerBuilder: CacheManager.Builder
+    private lateinit var mCacheManager: CacheManager
 
     //高级初始化
     class Builder {
-        private val builder: CacheManager.Builder?
-        fun setDebug(debug: Boolean): Builder? {
+        private val builder: CacheManager.Builder
+
+        fun setDebug(debug: Boolean): Builder {
             LogUtil.setDebug(debug)
             return this
         }
 
-        fun setMemoryCacheSizeByMB(memoryCacheSizeByMB: Int): Builder? {
+        fun setMemoryCacheSizeByMB(memoryCacheSizeByMB: Int): Builder {
             require(memoryCacheSizeByMB > 0) { "MemoryCacheSizeByMB < 0." }
             builder.setMemoryCacheSizeByMB(memoryCacheSizeByMB)
             return this
         }
 
-        fun setDiskCacheSizeByMB(diskCacheSizeByMB: Int): Builder? {
+        fun setDiskCacheSizeByMB(diskCacheSizeByMB: Int): Builder {
             require(diskCacheSizeByMB > 0) { "DiskCacheSizeByMB < 0." }
             builder.setDiskCacheSizeByMB(diskCacheSizeByMB)
             return this
         }
 
-        fun setDiskDirName(diskDirName: String?): Builder? {
+        fun setDiskDirName(diskDirName: String?): Builder {
             builder.setDiskDirName(
                 Utilities.checkNullOrEmpty(
                     diskDirName,
@@ -44,24 +50,24 @@ class RxCache private constructor() {
             return this
         }
 
-        fun setConverter(converter: IConverter?): Builder? {
+        fun setConverter(converter: IConverter?): Builder {
             builder.setConverter(Utilities.checkNotNull(converter, "converter is null."))
             return this
         }
 
-        fun setCacheMode(cacheMode: CacheMode?): Builder? {
+        fun setCacheMode(cacheMode: CacheMode?): Builder {
             builder.setCacheMode(Utilities.checkNotNull(cacheMode, "cacheMode is null."))
             return this
         }
 
-        fun build(): RxCache? {
+        fun build(): RxCache {
             getInstance().mCacheManagerBuilder = builder
             return getInstance()
         }
 
         init {
             assertInit()
-            builder = Builder(mContext)
+            builder = CacheManager.Builder(mContext)
         }
     }
     //sets
@@ -72,7 +78,7 @@ class RxCache private constructor() {
      * @param cacheMode
      * @return
      */
-    fun setCacheMode(cacheMode: CacheMode?): RxCache? {
+    fun setCacheMode(cacheMode: CacheMode): RxCache {
         mCacheManager = getCacheManagerBuilder().setCacheMode(cacheMode).build()
         return this
     }
@@ -83,7 +89,7 @@ class RxCache private constructor() {
      * @param diskDirName
      * @return
      */
-    fun setDiskDirName(diskDirName: String?): RxCache? {
+    fun setDiskDirName(diskDirName: String?): RxCache {
         Utilities.checkNullOrEmpty(diskDirName, "diskDirName is null or empty")
         mCacheManager = getCacheManagerBuilder().setDiskDirName(diskDirName).build()
         return this
@@ -95,7 +101,7 @@ class RxCache private constructor() {
      * @param diskCacheSizeByMB
      * @return
      */
-    fun setDiskCacheSizeByMB(diskCacheSizeByMB: Int): RxCache? {
+    fun setDiskCacheSizeByMB(diskCacheSizeByMB: Int): RxCache {
         require(diskCacheSizeByMB >= 0) { "diskCacheSize < 0." }
         mCacheManager = getCacheManagerBuilder().setDiskCacheSizeByMB(diskCacheSizeByMB).build()
         return this
@@ -107,7 +113,7 @@ class RxCache private constructor() {
      * @param memoryCacheSizeByMB
      * @return
      */
-    fun setMemoryCacheSizeByMB(memoryCacheSizeByMB: Int): RxCache? {
+    fun setMemoryCacheSizeByMB(memoryCacheSizeByMB: Int): RxCache {
         require(memoryCacheSizeByMB >= 0) { "memoryCacheSize < 0." }
         mCacheManager = getCacheManagerBuilder().setMemoryCacheSizeByMB(memoryCacheSizeByMB).build()
         return this
@@ -119,7 +125,7 @@ class RxCache private constructor() {
      * @param converter
      * @return
      */
-    fun setConverter(converter: IConverter?): RxCache? {
+    fun setConverter(converter: IConverter?): RxCache {
         mCacheManager = getCacheManagerBuilder().setConverter(
             Utilities.checkNotNull(
                 converter,
@@ -134,7 +140,7 @@ class RxCache private constructor() {
      *
      * @return
      */
-    fun getConverter(): IConverter? {
+    fun getConverter(): IConverter {
         return getCacheManager().getConverter()
     }
 
@@ -170,19 +176,20 @@ class RxCache private constructor() {
      *
      * @return
      */
-    fun getDiskDirName(): String? {
+    fun getDiskDirName(): String {
         return getCacheManager().getDiskDirName()
     }
 
-    private fun getCacheManagerBuilder(): CacheManager.Builder? {
-        if (mCacheManagerBuilder == null) mCacheManagerBuilder = Builder(mContext)
+    private fun getCacheManagerBuilder(): CacheManager.Builder {
+        if (mCacheManagerBuilder == null) mCacheManagerBuilder = CacheManager.Builder(mContext)
         return mCacheManagerBuilder
     }
 
-    private fun getCacheManager(): CacheManager? {
+    private fun getCacheManager(): CacheManager {
         if (mCacheManager == null) mCacheManager = getCacheManagerBuilder().build()
         return mCacheManager
     }
+
     //method for use
     /**
      * 写入缓存
@@ -193,7 +200,7 @@ class RxCache private constructor() {
      * @param <T>
      * @return
     </T> */
-    fun <T> put(key: String?, data: T?, cacheTime: Long): Observable<Boolean?>? {
+    fun <T> put(key: String?, data: T?, cacheTime: Long): Observable<Boolean?> {
         return getCacheManager().saveLocal(data, key, cacheTime)
     }
 
@@ -211,7 +218,7 @@ class RxCache private constructor() {
         key: String?,
         update: Boolean,
         clazz: Class<T?>?
-    ): Observable<CacheResponse<T?>?>? {
+    ): Observable<CacheResponse<T?>?> {
         return getCacheManager().get(key, update, clazz)
     }
 
@@ -229,7 +236,7 @@ class RxCache private constructor() {
         key: String?,
         update: Boolean,
         type: Type?
-    ): Observable<CacheResponse<T?>?>? {
+    ): Observable<CacheResponse<T?>?> {
         return getCacheManager().get(key, update, type)
     }
 
@@ -241,8 +248,8 @@ class RxCache private constructor() {
      * @param <T>
      * @return
     </T> */
-    operator fun <T> get(key: String?, update: Boolean): Observable<CacheResponse<T?>?>? {
-        return get<Any?>(key, update, null)
+    operator fun <T> get(key: String?, update: Boolean): Observable<CacheResponse<T?>?> {
+        return get<T?>(key, update, null)
     }
 
     /**
@@ -251,12 +258,12 @@ class RxCache private constructor() {
      * @param key
      * @return
      */
-    fun remove(key: String?): Observable<Boolean?>? {
+    fun remove(key: String?): Observable<Boolean?> {
         return getCacheManager().remove(key)
     }
 
-    fun remove(vararg keys: String?): Observable<Boolean?>? {
-        return getCacheManager().remove(keys)
+    fun remove(vararg keys: String): Observable<Boolean?> {
+        return getCacheManager().remove(*keys)
     }
 
     /**
@@ -264,13 +271,13 @@ class RxCache private constructor() {
      *
      * @return
      */
-    fun clear(): Observable<Boolean?>? {
+    fun clear(): Observable<Boolean?> {
         return getCacheManager().clear()
     }
 
     companion object {
-        private var mContext: Application? = null
-        fun init(context: Application?) {
+        private lateinit var mContext: Application
+        fun init(context: Application) {
             mContext = Utilities.checkNotNull(context, "context is null.")
         }
 
@@ -280,7 +287,7 @@ class RxCache private constructor() {
 
         //获取实例
         private var instance: RxCache? = null
-        fun getInstance(): RxCache? {
+        fun getInstance(): RxCache {
             if (instance == null) {
                 synchronized(RxCache::class.java) {
                     if (instance == null) {
@@ -288,7 +295,7 @@ class RxCache private constructor() {
                     }
                 }
             }
-            return instance
+            return instance!!
         }
     }
 }
